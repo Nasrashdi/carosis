@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  phone     String?
+  role      String   @default("user") // "admin", "user", "dealer"
+  cars      Car[]    @relation("UserCars")
+  loans     LoanOffer[]
+  createdAt DateTime @default(now())
+}
+
+model Car {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  price       Float
+  year        Int
+  make        String
+  model       String
+  images      String[]
+  mileage     Int
+  status      String   @default("listed") // "listed", "sold"
+  seller      User?    @relation("UserCars", fields: [sellerId], references: [id])
+  sellerId    String?
+  loans       LoanOffer[]
+  insurance   InsuranceQuote[]
+  createdAt   DateTime @default(now())
+}
+
+model LoanOffer {
+  id        String   @id @default(uuid())
+  car       Car      @relation(fields: [carId], references: [id])
+  carId     String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  bankName  String
+  rate      Float
+  approved  Boolean
+  createdAt DateTime @default(now())
+}
+
+model InsuranceQuote {
+  id        String   @id @default(uuid())
+  car       Car      @relation(fields: [carId], references: [id])
+  carId     String
+  provider  String
+  price     Float
+  coverage  String
+  createdAt DateTime @default(now())
+}
