@@ -2,26 +2,31 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 export async function GET() {
-  const cars = await prisma.car.findMany({
-    where: { status: 'listed' },
-    orderBy: { createdAt: 'desc' },
-  })
-  return NextResponse.json(cars)
+  try {
+    const cars = await prisma.car.findMany({
+      include: {
+        seller: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+    return NextResponse.json(cars)
+  } catch (error) {
+    console.error('Database error:', error)
+    return NextResponse.json({ error: 'Failed to fetch cars' }, { status: 500 })
+  }
 }
 
-export async function POST(req: Request) {
-  const form = await req.formData()
-  const data = {
-    title: form.get('title') as string,
-    make: form.get('make') as string,
-    model: form.get('model') as string,
-    year: Number(form.get('year')),
-    price: Number(form.get('price')),
-    mileage: Number(form.get('mileage')),
-    description: form.get('description') as string,
-    images: (form.get('images') as string).split(',').map(s => s.trim()),
-    status: 'listed',
+export async function POST(request: Request) {
+  try {
+    const body = await request.json()
+    const car = await prisma.car.create({
+      data: body,
+    })
+    return NextResponse.json(car)
+  } catch (error) {
+    console.error('Database error:', error)
+    return NextResponse.json({ error: 'Failed to create car' }, { status: 500 })
   }
-  const car = await prisma.car.create({ data })
-  return NextResponse.json(car)
 }
