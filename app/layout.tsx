@@ -1,19 +1,10 @@
-import './globals.css'
-import { NextIntlClientProvider } from 'next-intl'
+import { redirect } from 'next/navigation';
 
-export const metadata = {
-  title: 'كاروسيس | Carosis',
-  description: 'منصتك الشاملة لشراء، بيع، تمويل، تأمين وتسجيل السيارات في سلطنة عمان',
-}
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="ar" dir="rtl">
-      <body className="bg-gray-50 font-sans">
-        <NextIntlClientProvider locale="ar">
-          {children}
-        </NextIntlClientProvider>
-      </body>
-    </html>
-  )
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  // Redirect to default locale
+  redirect('/ar');
 }

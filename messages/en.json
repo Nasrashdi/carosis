@@ -1,0 +1,21 @@
+{
+  "HomePage": {
+    "title": "Welcome to Carosis 🚗",
+    "subtitle": "Your comprehensive car hub: buy, sell, finance, insure, and register your vehicle — all in one platform.",
+    "features": {
+      "buy": "Buy Your Car",
+      "sell": "Sell Your Car", 
+      "finance": "Finance & Insurance"
+    },
+    "emptyRoom": "This room is empty. Add your first memory object above! 🧠",
+    "welcomeMessage": "Welcome to Carosis",
+    "platformDescription": "Your comprehensive car marketplace in Oman"
+  },
+  "Navigation": {
+    "home": "Home",
+    "buy": "Buy",
+    "sell": "Sell",
+    "about": "About",
+    "contact": "Contact"
+  }
+}
